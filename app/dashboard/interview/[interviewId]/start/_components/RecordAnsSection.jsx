@@ -5,14 +5,26 @@ import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import useSpeechToText from "react-hook-speech-to-text";
 import { Mic, StopCircle } from "lucide-react";
+import { toast } from "sonner";
+import { chatSession } from "@/utils/GeminiAIModal";
+import { UserAnswer } from "@/utils/schema";
+import moment from "moment";
+import { db } from "@/utils/db";
 
-const RecordAnsSection = () => {
+const RecordAnsSection = ({
+  interviewQuestion,
+  activeQuestion,
+  interviewData,
+}) => {
+  // const {user} = useUser() // get user from clerk context
   const [userAnswer, setUserAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
   const {
     error,
     interimResult,
     isRecording,
     results,
+    setResults,
     startSpeechToText,
     stopSpeechToText,
   } = useSpeechToText({
@@ -20,20 +32,72 @@ const RecordAnsSection = () => {
     useLegacyResults: false,
   });
 
+  // console.log(interviewData);
+
   useEffect(() => {
     results.map((result) =>
       setUserAnswer((prevAns) => prevAns + result?.transcript)
     );
   }, [results]);
 
+  useEffect(() => {
+    if (!isRecording && userAnswer?.length > 10) {
+      UpdateUserAnswer();
+    }
+  }, [userAnswer]);
+
   if (error) return <p>Web Speech API is not available in this browser 🤷‍</p>;
 
-  const saveUserAns = () => {
+  const StartStopRecording = async () => {
     if (isRecording) {
       stopSpeechToText();
     } else {
       startSpeechToText();
     }
+  };
+
+  const UpdateUserAnswer = async () => {
+    setLoading(true);
+
+    const feedbackPrompt =
+      "Question: " +
+      interviewQuestion[activeQuestion]?.question +
+      ", User answer: " +
+      userAnswer +
+      ", Depends on question and user answer for given interview question" +
+      " please give us rating (out of 5) for answer and feedback as area of improvement if any," +
+      " in just 3 to 5 lines to improve it in JSON format with rating field and feedback field.";
+
+    const result = await chatSession.sendMessage(feedbackPrompt);
+
+    const mockJsonRes = result.response
+      .text()
+      .replace("```json", "")
+      .replace("```", "");
+
+    console.log(mockJsonRes);
+
+    const mockJson = JSON.parse(mockJsonRes);
+
+    const resp = await db.insert(UserAnswer).values({
+      mockIdRef: interviewData?.mockId,
+      question: interviewQuestion[activeQuestion]?.question,
+      // userEmail: user?.primaryEmailAddress?.emailAddress,
+      userEmail: "anurag@ab.com",
+      correctAns: interviewQuestion[activeQuestion]?.answer,
+      userAns: userAnswer,
+      rating: mockJson?.rating,
+      feedback: mockJson?.feedback,
+      createdAt: moment().format("DD-MM-YYYY"),
+    });
+
+    if (resp) {
+      toast("Answer saved successfully!");
+      setUserAnswer("");
+      setResults([]);
+    }
+    setResults([]);
+    setLoading(false);
   };
 
   return (
@@ -47,10 +111,15 @@ const RecordAnsSection = () => {
         />
         <Webcam
           mirrored={true}
-          style={{ height: 280, width: "100%", zIndex: 10 }}
+          style={{ height: 320, width: "100%", zIndex: 10 }}
         />
       </div>
-      <Button variant="outline" className="my-5" onClick={saveUserAns}>
+      <Button
+        disabled={loading}
+        variant="outline"
+        className="my-5"
+        onClick={StartStopRecording}
+      >
         {isRecording ? (
           <h2 className="text-red-600 flex gap-1 animate-pulse items-center">
             <StopCircle /> Stop Recording

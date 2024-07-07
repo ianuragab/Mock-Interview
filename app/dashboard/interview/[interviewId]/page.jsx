@@ -34,27 +34,27 @@ const Interview = ({ params }) => {
       <h2 className="font-bold text-2xl">Let's Get Started</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-2">
         <div className="flex flex-col mt-6 gap-5">
-          <div className="flex flex-col p-3 gap-2 rounded-lg border">
+          <div className="flex flex-col p-3 gap-4 rounded-lg border">
             <h3 className="capitalize">
-              <strong>Job Role/Position: </strong>
+              <strong>Job Role/Position : </strong>
               {interviewData?.jobPosition}
             </h3>
             <h3 className="capitalize">
-              <strong>Job Description/Tech Stack: </strong>
+              <strong>Job Description/Tech Stack : </strong>
               {interviewData?.jobDesc}
             </h3>
             <h3>
-              <strong>Years of Experience: </strong>
+              <strong>Years of Experience : </strong>
               {interviewData?.jobExperience}
             </h3>
           </div>
 
-          <div className="p-4 border rounded-lg border-yellow-300 bg-yellow-100">
+          <div className="p-5 border rounded-lg border-yellow-300 bg-yellow-100">
             <h2 className="flex gap-2 items-center text-yellow-500">
               <Lightbulb />
               <strong>Information</strong>
             </h2>
-            <h4 className="text-gray-500 mt-2">
+            <h4 className="text-gray-500 mt-4">
               Enable Video Web Cam and Microphone to start your AU Generated
               Mock Interview. It has 5 uestions which you can answer and at last
               you will get the report on the basis of your answer.
@@ -64,13 +64,13 @@ const Interview = ({ params }) => {
           </div>
         </div>
 
-        <div>
+        <div className="mt-6">
           {webCamEnabled ? (
             <Webcam
               onUserMedia={() => setWebCamEnabled(true)}
               onUserMediaError={() => setWebCamEnabled(false)}
-              mirrored={true5}
-              style={{ height: 280, width: 300 }}
+              mirrored={true}
+              style={{ height: "90%", width: "96%", rounded: "lg"}}
             />
           ) : (
             <>

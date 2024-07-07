@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
 import Header from "./dashboard/_components/Header";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,9 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <div className="mx-3 md:mx-9 lg:mx-24">
-          {children}
-        </div>
+        <div className="mx-3 md:mx-9 lg:mx-24">{children}</div>
       </body>
     </html>
   );

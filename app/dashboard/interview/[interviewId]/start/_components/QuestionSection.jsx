@@ -12,20 +12,20 @@ const QuestionSection = ({ interviewQuestion, activeQuestion }) => {
   };
   return (
     interviewQuestion && (
-      <div className="p-5 border rounded-lg my-8">
+      <div className="p-5 border rounded-lg mt-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {interviewQuestion &&
             interviewQuestion.map((ques, index) => (
-              <>
-                <h2
-                  className={`bg-secondary rounded-full p-2 text-xs md:text-sm text-center cursor-pointer ${
-                    activeQuestion == index && "bg-primary text-white"
-                  }`}
-                  key={index}
-                >
-                  Question #{index + 1}
-                </h2>
-              </>
+              <h2
+                key={index}
+                className={`border rounded-full p-2 text-xs md:text-sm text-center cursor-pointer ${
+                  activeQuestion >= 0 && activeQuestion === index
+                    ? "bg-primary text-white"
+                    : ""
+                }`}
+              >
+                Question: {index + 1}
+              </h2>
             ))}
         </div>
         <h2 className="my-4 text-md md:text-lg">
@@ -38,7 +38,7 @@ const QuestionSection = ({ interviewQuestion, activeQuestion }) => {
           }
         />
 
-        <div className="border rounded-lg p-4 bg-blue-100 mt-5">
+        <div className="border rounded-lg p-4 bg-blue-100 mt-12">
           <h2 className="flex gap-2 items-center text-primary">
             <Lightbulb />
             <strong>Note:</strong>
