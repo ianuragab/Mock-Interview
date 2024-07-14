@@ -36,6 +36,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## .env.local File:
+```bash
 # Gemini API Key 
 NEXT_PUBLIC_NUMOF_QUESTIONS=5
 NEXT_PUBLIC_GEMINI_API_KEY=AIzaSyB4H6Ug_w9vC-U7XA7BtQa0USejKdouH6k
@@ -49,4 +50,4 @@ CLERK_SECRET_KEY=sk_test_S7WqGGmyMA16lb5vOTcm3kCmHW2DnocmeOJ3mqzDrp
 # Clerk Auth URLs
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
+```
