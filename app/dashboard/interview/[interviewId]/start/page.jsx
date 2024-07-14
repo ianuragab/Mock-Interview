@@ -34,7 +34,7 @@ const StartInterview = ({ params }) => {
     const result = await db
       .select()
       .from(MockInterview)
-      .where(eq(MockInterview.mockId, params.interviewId));
+      .where(eq(MockInterview.id, params.interviewId));
     setInterviewData(result[0]);
     // console.log(result);
 
@@ -69,7 +69,7 @@ const StartInterview = ({ params }) => {
           </Button>
         )}
         {activeQuestion == interviewQuestion?.length - 1 && (
-          <Link href={"/dashboard/interview/"+interviewData?.mockId+"/feedback"}>
+          <Link href={"/dashboard/interview/"+interviewData?.id+"/feedback"}>
             <Button>End Interview</Button>
           </Link>
         )}

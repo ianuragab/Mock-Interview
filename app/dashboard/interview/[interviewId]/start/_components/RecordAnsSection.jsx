@@ -10,13 +10,14 @@ import { chatSession } from "@/utils/GeminiAIModal";
 import { UserAnswer } from "@/utils/schema";
 import moment from "moment";
 import { db } from "@/utils/db";
+import { useUser } from "@clerk/nextjs";
 
 const RecordAnsSection = ({
   interviewQuestion,
   activeQuestion,
   interviewData,
 }) => {
-  // const {user} = useUser() // get user from clerk context
+  const {user} = useUser() // get user from clerk context
   const [userAnswer, setUserAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const {
@@ -39,6 +40,7 @@ const RecordAnsSection = ({
       setUserAnswer((prevAns) => prevAns + result?.transcript)
     );
   }, [results]);
+  // console.log(results);
 
   useEffect(() => {
     if (!isRecording && userAnswer?.length > 10) {
@@ -79,11 +81,12 @@ const RecordAnsSection = ({
 
     const mockJson = JSON.parse(mockJsonRes);
 
+    // console.log(interviewData);
+
     const resp = await db.insert(UserAnswer).values({
-      mockIdRef: interviewData?.mockId,
+      idRef: interviewData?.id,
       question: interviewQuestion[activeQuestion]?.question,
-      // userEmail: user?.primaryEmailAddress?.emailAddress,
-      userEmail: "anurag@ab.com",
+      userEmail: user?.primaryEmailAddress?.emailAddress,
       correctAns: interviewQuestion[activeQuestion]?.answer,
       userAns: userAnswer,
       rating: mockJson?.rating,

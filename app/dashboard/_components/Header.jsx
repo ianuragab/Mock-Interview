@@ -1,4 +1,5 @@
 "use client";
+import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -8,7 +9,7 @@ const Header = () => {
 
   const path = usePathname;
   return (
-    <div className="flex p-4 items-center justify-between bg-secondary shadow-md">
+    <div className="flex p-4 items-center justify-between bg-secondary shadow-lg sticky">
       <Image src={"/logo.svg"} width={140} height={96} alt="logo" />
       <ul className="hidden md:flex gap-6 nav-items">
         <li
@@ -40,8 +41,8 @@ const Header = () => {
         >
           How it Works?
         </li>
+        <UserButton />
       </ul>
-      {/* <UserButton /> */}
     </div>
   );
 };

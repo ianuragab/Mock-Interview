@@ -24,10 +24,10 @@ const Interview = ({ params }) => {
     const result = await db
       .select()
       .from(MockInterview)
-      .where(eq(MockInterview.mockId, params.interviewId));
+      .where(eq(MockInterview.id, params.interviewId));
 
     setInterviewData(result[0]);
-    // console.log(result);
+    console.log(result);
   };
   return (
     <div className="my-10">
