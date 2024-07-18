@@ -1,5 +1,6 @@
 import AddInterview from "./_components/AddNewInterview";
 import InterviewList from "./_components/InterviewList";
+import ToggleTheme from "./_components/ThemeSwitch.jsx";
 
 export default function Dashboard() {
   return (
